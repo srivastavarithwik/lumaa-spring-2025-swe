@@ -15,6 +15,23 @@ router.get('/', authenticateToken, async (req, res) => {
     }
 });
 
+// GET /tasks/:id – Retrieve a specific task by ID for the authenticated user
+router.get('/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user.id;
+    try {
+        const task = await pool.query('SELECT * FROM tasks WHERE id = $1 AND "userId" = $2', [id, userId]);
+        console.log(task);
+        if (task.rows.length === 0) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+        res.json(task.rows[0]); // Return the task details
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // POST /tasks – Create a new task
 router.post('/', authenticateToken, async (req, res) => {
     const { title, description } = req.body;

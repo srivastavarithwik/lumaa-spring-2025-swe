@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
             'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username',
             [username, hashedPassword]
         );
-        res.status(201).json(result.rows[0]);
+        res.status(201).json({ message: 'Registration successful', user: result.rows[0] });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Server error' });
@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
         }
         // Create a JWT token with user id
         const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '1h' });
-        res.json({ token });
+        res.json({ message: 'Login successful', token });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Server error' });

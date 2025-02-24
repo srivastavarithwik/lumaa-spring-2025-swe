@@ -1,9 +1,13 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors'); // Import the cors middleware
 const app = express();
-const setupDatabase = require('./setupDB'); // Bootstraps db and tables
+const setupDatabase = require('./setupDB'); // Import the DB setup function
 const authRoutes = require('./routes/auth');
 const tasksRoutes = require('./routes/tasks');
+
+// Enable CORS for all routes
+app.use(cors());
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
