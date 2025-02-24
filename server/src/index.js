@@ -1,8 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const setupDatabase = require('./setupDB'); //Bootstraps DB and Table
+const setupDatabase = require('./setupDB'); // Bootstraps db and tables
 const authRoutes = require('./routes/auth');
+const tasksRoutes = require('./routes/tasks');
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -22,6 +23,7 @@ async function startServer() {
 
 // Define routes
 app.use('/auth', authRoutes);
+app.use('/tasks', tasksRoutes);
 
 // Start the server
 startServer();
